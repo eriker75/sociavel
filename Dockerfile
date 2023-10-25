@@ -3,6 +3,9 @@ FROM php:8.1-apache
 ARG USER_ID
 RUN useradd -u ${USER_ID} www
 
+USER root
+RUN a2enmod rewrite
+
 WORKDIR /var/www/html
 
 COPY ./src .
@@ -17,13 +20,15 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev
 
-RUN docker-php-ext-install zip
+RUN docker-php-ext-install zip pdo_mysql
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN a2enmod rewrite
+RUN mkdir -p /home/www/.composer
+RUN chown -R www:www /home/www/.composer;
 
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install
+#--no-dev --optimize-autoloader
 
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 

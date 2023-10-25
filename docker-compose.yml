@@ -12,7 +12,8 @@ services:
     ports:
       - 8080:80
     volumes:
-      - ./src:/var/www/html
+      - ./src:/var/www/html/
+      - /var/www/html/vendor
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=${MYSQL_USER}
