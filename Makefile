@@ -41,7 +41,7 @@ compose-build:
 		docker-compose -p $(COMPOSE_PROJECT_NAME) build
 
 compose-up:
-		docker-compose -p $(COMPOSE_PROJECT_NAME) up --build -d
+		docker-compose -p $(COMPOSE_PROJECT_NAME) up -d --build
 
 compose-down:
 		docker-compose -p $(COMPOSE_PROJECT_NAME) down

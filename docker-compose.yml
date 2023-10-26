@@ -10,10 +10,15 @@ services:
     image: webapp
     container_name: webcontainer
     ports:
-      - 8080:80
+      - 80:80
     volumes:
+      # - appvol:/var/www/html/
       - ./src:/var/www/html/
-      - /var/www/html/vendor
+      - ./000-default.conf:/etc/apache2/sites-available/000-default.conf
+      # - /var/www/html/vendor
+      # - /var/www/html/node_modules
+    networks:
+      - webapp_network
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_USER=${MYSQL_USER}
@@ -22,9 +27,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     depends_on:
       - mysql
-    networks:
-      - webapp_network
-  
+
   mysql:
     image: mysql:5.7
     container_name: mysqldb
@@ -37,7 +40,7 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - webapp_network
-    
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpdbadmin
@@ -56,3 +59,4 @@ networks:
 
 volumes:
   mysql_data:
+  appvol:
